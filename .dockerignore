@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.env
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+ecommerce_data.json
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+products/
+
+# Docker
+.docker/
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+docs/
+
+# Tests
+tests/
+.pytest_cache/
+
+# Logs
+*.log
+logs/ 

@@ -1,0 +1,8 @@
+faker
+python-dotenv
+pillow
+requests
+torch
+diffusers
+transformers
+accelerate
