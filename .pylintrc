@@ -1,0 +1,115 @@
+[MASTER]
+# Python code to execute before anything else
+init-hook="from pylint.config import find_pylintrc; import os, sys; sys.path.append(os.path.dirname(find_pylintrc()))"
+
+# Add any Python module names here where you want to disable all warnings
+ignore=CVS
+
+# Use multiple processes to speed up Pylint (use "0" for auto)
+jobs=0
+
+# List of plugins to load
+load-plugins=
+
+# Allow loading modules/packages from outside the root directory
+ignore-paths=
+
+# Python code to execute before module is checked
+init-hook=
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+disable=
+    C0111,  # missing-docstring (covered by flake8-docstrings)
+    C0103,  # invalid-name
+    R0903,  # too-few-public-methods
+    R0913,  # too-many-arguments
+    W0511,  # fixme
+    W0621,  # redefined-outer-name
+    W0703,  # broad-except
+    R0914,  # too-many-locals
+    R0915,  # too-many-statements
+    C0301,  # line-too-long (covered by flake8)
+    C0302,  # too-many-lines
+    C0114,  # missing-module-docstring (covered by flake8-docstrings)
+    C0115,  # missing-class-docstring (covered by flake8-docstrings)
+    C0116,  # missing-function-docstring (covered by flake8-docstrings)
+
+[REPORTS]
+# Set the output format (text, parseable, colorized, html)
+output-format=colorized
+
+# Include a brief explanation of each error
+msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg}
+
+# Files or directories to be skipped. They should be base names, not paths
+ignore=CVS
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=79
+
+# Maximum number of lines in a module
+max-module-lines=1000
+
+# String used as indentation unit (2 spaces, 4 spaces, tabs)
+indent-string='    '
+
+[BASIC]
+# Regular expression which should only match function or class names
+function-rgx=[a-z_][a-z0-9_]{2,50}$
+
+# Regular expression which should only match correct variable names
+variable-rgx=[a-z_][a-z0-9_]{2,30}$
+
+# Good variable names which should always be accepted
+good-names=i,j,k,ex,Run,_,id,pk,x,y,f
+
+# Regular expression which should only match correct module level names
+const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
+
+[SIMILARITIES]
+# Minimum lines number of a similarity
+min-similarity-lines=4
+
+# Ignore imports when computing similarities
+ignore-imports=yes
+
+[TYPECHECK]
+# List of module names for which member attributes should not be checked
+ignored-modules=numpy,torch,tensorflow,cv2,PIL
+
+# List of classes names for which member attributes should not be checked
+ignored-classes=SQLObject,optparse.Values,thread._local,_thread._local
+
+[VARIABLES]
+# A regular expression matching the name of dummy variables
+dummy-variables-rgx=_$|dummy
+
+# List of additional names to consider as builtins
+additional-builtins=
+
+[CLASSES]
+# List of method names used to declare (i.e. assign) instance attributes
+defining-attr-methods=__init__,__new__,setUp
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=10
+
+# Maximum number of locals for function / method body
+max-locals=20
+
+# Maximum number of return / yield for function / method body
+max-returns=6
+
+# Maximum number of statements in function / method body
+max-statements=50
+
+[IMPORTS]
+# Allow wildcard imports from modules that define __all__
+allow-wildcard-with-all=no
+
+[EXCEPTIONS]
+# Exceptions that will emit a warning when caught
+overgeneral-exceptions=Exception 

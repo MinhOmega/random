@@ -1,19 +1,29 @@
+"""Product generator module for creating fake product data.
+
+This module provides functionality to generate realistic product data
+including names, descriptions, prices, and images.
+"""
+
 import random
 from faker import Faker
-from .image_generator import ImageGenerator
+from .image.image_generator_factory import create_image_generator
 
 fake = Faker()
 
 
 class ProductGenerator:
-    @staticmethod
-    def generate_product(product_id: int) -> dict:
+    def __init__(self):
+        self.image_generator = create_image_generator()
+
+    def generate_product(self, product_id: int) -> dict:
         product_name = fake.sentence(nb_words=3).strip(".")
         product_sku = product_name.replace(" ", "_").lower()
         description = fake.paragraph(nb_sentences=5)
 
-        # Generate image using Gemini
-        image_result = ImageGenerator.generate_product_image(product_name, description)
+        # Generate image using the appropriate generator
+        image_result = self.image_generator.generate_product_image(
+            product_name, description
+        )
 
         product_data = {
             "product_id": product_id,

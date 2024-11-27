@@ -47,3 +47,14 @@ logs/
 
 # Project specific
 products/
+
+# Dockerfiles
+Dockerfile.local
+Dockerfile.replicate
+Dockerfile.dev.local
+Dockerfile.dev.replicate
+docker-compose.dev.yml
+
+# Requirements
+requirements.local.txt
+requirements.replicate.txt

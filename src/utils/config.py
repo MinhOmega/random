@@ -1,4 +1,8 @@
-import os
+"""Configuration module for environment and logging setup.
+
+This module handles loading environment variables and configuring logging.
+"""
+
 from dotenv import load_dotenv
 import logging
 

@@ -4,7 +4,7 @@ services:
   ecommerce-generator:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: ${IMAGE_GENERATOR_TYPE:-local}.dockerfile
     volumes:
       - .:/app
       - /app/__pycache__

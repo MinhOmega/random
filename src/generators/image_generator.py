@@ -6,6 +6,8 @@ from io import BytesIO
 import requests
 import torch
 from diffusers import DiffusionPipeline
+import replicate
+from ..config.image_config import IMAGE_CONFIG
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +34,42 @@ class ImageGenerator:
         return cls._pipeline
 
     @staticmethod
+    def _generate_with_replicate(prompt: str, negative_prompt: str) -> bytes:
+        """Generate image using Replicate API"""
+        try:
+            output = replicate.run(
+                IMAGE_CONFIG["replicate_model"],
+                input={
+                    "prompt": prompt,
+                    "negative_prompt": negative_prompt,
+                    "num_inference_steps": 25,
+                    "guidance_scale": 7.0,
+                }
+            )
+            
+            # Download the generated image
+            response = requests.get(output[0])
+            response.raise_for_status()
+            return response.content
+
+        except Exception as e:
+            logger.error(f"Replicate generation error: {e}")
+            raise
+
+    @staticmethod
+    def _generate_with_local(prompt: str, negative_prompt: str) -> Image:
+        """Generate image using local pipeline"""
+        pipeline = ImageGenerator._get_pipeline()
+        with torch.autocast("cuda" if torch.cuda.is_available() else "cpu"):
+            image = pipeline(
+                prompt=prompt,
+                negative_prompt=negative_prompt,
+                num_inference_steps=25,
+                guidance_scale=7.0,
+            ).images[0]
+        return image
+
+    @staticmethod
     def generate_product_image(product_name: str, description: str) -> dict:
         try:
             # Create product directory
@@ -56,15 +94,12 @@ class ImageGenerator:
                     "distortion, noise, grain, dark, shadows"
                 )
 
-                # Generate image with optimized parameters
-                pipeline = ImageGenerator._get_pipeline()
-                with torch.autocast("cuda" if torch.cuda.is_available() else "cpu"):
-                    image = pipeline(
-                        prompt=prompt,
-                        negative_prompt=negative_prompt,
-                        num_inference_steps=25,  # Reduced for speed
-                        guidance_scale=7.0,
-                    ).images[0]
+                # Generate image based on configuration
+                if IMAGE_CONFIG["generator_type"] == "replicate":
+                    image_bytes = ImageGenerator._generate_with_replicate(prompt, negative_prompt)
+                    image = Image.open(BytesIO(image_bytes))
+                else:
+                    image = ImageGenerator._generate_with_local(prompt, negative_prompt)
 
                 # Save image
                 filename = f"{product_name.replace(' ', '_').lower()}_main.jpg"
